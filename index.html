@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123b52">
+<title>Control de respiradores y monitores · UCIP</title>
+<style>
+:root{--navy:#12354a;--teal:#087f8c;--teal2:#16a3a3;--bg:#f2f6f8;--ink:#183447;--muted:#647987;--line:#dce7eb;--red:#c62828;--green:#19764a;--amber:#9a6500;--white:#fff;--shadow:0 8px 24px rgba(18,53,74,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);padding-bottom:24px}button,input,select,textarea{font:inherit}button{touch-action:manipulation}
+header{background:linear-gradient(140deg,#102e43 0%,#126b78 65%,#16a3a3 100%);color:#fff;padding:22px 16px 28px;border-radius:0 0 28px 28px;box-shadow:0 8px 22px #123b5220;position:relative;overflow:hidden}header:after{content:"";position:absolute;width:190px;height:190px;border:30px solid #ffffff12;border-radius:50%;right:-60px;top:-70px;pointer-events:none}header .brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1}header .brand-icon{width:52px;height:52px;display:grid;place-items:center;background:#ffffff20;border:1px solid #ffffff35;border-radius:17px;font-size:28px;flex-shrink:0}header h1{font-size:clamp(18px,4.8vw,24px);line-height:1.12;margin:0 0 6px;letter-spacing:-.4px}header p{margin:0;font-size:13px;opacity:.88}.status{font-size:12px;color:#e1f5f7;margin-top:14px;display:flex;align-items:center;gap:7px}.status:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#f5c451;box-shadow:0 0 0 4px #ffffff16}
+.wrap{max-width:980px;margin:auto;padding:14px}.hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:3px 0 13px}.eyebrow{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:4px}.hero-row h2{font-size:20px;letter-spacing:-.4px;margin:0}.hint{font-size:12px;color:var(--muted);line-height:1.5}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}.stat{background:var(--white);border:1px solid var(--line);border-radius:17px;padding:13px 12px;box-shadow:var(--shadow);min-width:0}.stat .stat-icon{font-size:19px;display:block;margin-bottom:7px}.stat b{display:block;font-size:25px;line-height:1.05;color:var(--navy);letter-spacing:-.6px}.stat span{font-size:11px;color:var(--muted);font-weight:700;display:block;margin-top:5px}.progress-card{background:#fff;border:1px solid var(--line);padding:13px 14px;border-radius:16px;margin:0 0 19px;box-shadow:var(--shadow)}.progress-label{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;margin-bottom:9px}.progress-track{height:8px;background:#e8eff2;border-radius:99px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#55c6a1);border-radius:99px;transition:width .25s}
+.btn{border:0;border-radius:13px;background:var(--teal);color:#fff;font-weight:850;padding:13px 15px;cursor:pointer;min-height:47px;box-shadow:0 3px 9px #087f8c24;transition:transform .12s,filter .12s}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.6}.btn.secondary{background:#e7f0f3;color:var(--navy);box-shadow:none}.btn.danger{background:#fff0f0;color:var(--red);border:1px solid #f2c4c4;box-shadow:none}.filters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;margin:0 0 12px}.searchbox{position:relative}.searchbox span{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:17px;pointer-events:none}.filters input,.filters select,input,select,textarea{font:inherit;border:1px solid #d1dfe4;border-radius:12px;padding:12px;background:#fff;color:var(--ink);width:100%;min-width:0;outline:none}.filters input{padding-left:40px}.filters input:focus,input:focus,select:focus,textarea:focus{border-color:var(--teal2);box-shadow:0 0 0 3px #16a3a31a}.filters select{max-width:145px}.quick-filters{display:flex;gap:7px;overflow-x:auto;padding:2px 0 11px;margin-bottom:5px;scrollbar-width:none}.quick-filters::-webkit-scrollbar{display:none}.chip{border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;font-weight:800;padding:10px 13px;border-radius:999px;white-space:nowrap;cursor:pointer;min-height:40px}.chip.active{background:var(--navy);border-color:var(--navy);color:#fff}.chip .n{opacity:.75;margin-left:4px}
+.list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0 11px}.list-heading strong{font-size:14px}.list-heading span{font-size:12px;color:var(--muted)}.equip-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.equip{position:relative;background:#fff;border:1px solid var(--line);border-radius:19px;padding:14px;text-align:left;color:var(--ink);cursor:pointer;box-shadow:0 4px 14px #123b5208;min-height:160px;transition:transform .14s,border-color .14s,box-shadow .14s;overflow:hidden}.equip:active{transform:scale(.985)}.equip:hover{border-color:#9dcbd0;box-shadow:var(--shadow)}.equip-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px}.equip-icon{width:45px;height:45px;border-radius:15px;display:grid;place-items:center;font-size:24px;background:#e6f4f5;flex-shrink:0}.equip-icon.transport{background:#fff1df}.equip-icon.monitor{background:#eaeaff}.equip-check{font-size:18px;color:#b5c3c9}.equip strong{display:block;font-size:16px;line-height:1.2;letter-spacing:-.2px;margin-bottom:5px;overflow-wrap:anywhere}.equip .model{font-size:12px;color:var(--muted);line-height:1.35;min-height:30px}.equip .serial{font-size:11px;color:#506876;font-weight:750;margin-top:9px;overflow-wrap:anywhere}.equip .census{font-size:12px;margin-top:5px;color:var(--muted)}.badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:6px 9px;font-size:10px;line-height:1.15;font-weight:850;margin-top:11px;background:#e8f0f3;color:#526773}.badge.done{background:#e0f5e9;color:#176c43}.badge.pending{background:#fff1d6;color:#865300}.equip.done-card{border-color:#cce9d9}.equip.done-card:after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#36a873}.equip.pending-card:after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#f0b443}
+.card{background:#fff;border:1px solid var(--line);border-radius:21px;padding:16px;box-shadow:var(--shadow)}.back{margin:0 0 12px;width:100%;text-align:left}.form-hero{background:linear-gradient(135deg,#12354a,#117984);border-radius:18px;padding:16px;color:#fff;margin:0 0 16px}.form-hero h2{font-size:20px;line-height:1.2;margin:0 0 7px}.form-hero .hint{color:#d4ebee}.form-hero .badge{margin-top:10px}.current{font-size:12px;color:var(--muted);margin:8px 0 14px;background:#f5f9fa;padding:10px 12px;border-radius:12px}.section-title{font-size:12px;color:var(--navy);margin:22px 0 11px;font-weight:900;text-transform:uppercase;letter-spacing:.055em;display:flex;align-items:center;gap:8px}.section-title:before{content:"";width:4px;height:18px;background:var(--teal);border-radius:8px}.fieldgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin:0 0 6px}.field input,.field select,.field textarea{min-height:47px}.field.full{grid-column:1/-1}.battery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.battery{border:1px solid var(--line);border-radius:15px;padding:11px;background:#f8fbfc;min-width:0}.battery-head{display:flex;justify-content:space-between;align-items:center;gap:5px;margin-bottom:8px;font-weight:850;font-size:13px}.color-toggle{border:1px solid #d1dce1;border-radius:9px;background:white;padding:7px 9px;font-size:11px;font-weight:850;cursor:pointer;min-height:34px;white-space:nowrap}.color-toggle.red{color:var(--red);background:#fff0f0;border-color:#e7b0b0}.battery input{margin-bottom:5px;min-height:43px}.btnrow{display:flex;gap:9px;margin-top:18px}.btnrow .btn{flex:1}.hidden{display:none!important}.toast{position:fixed;bottom:18px;left:12px;right:12px;max-width:600px;margin:auto;padding:14px 16px;background:#173042;color:#fff;border-radius:14px;box-shadow:0 4px 20px #0003;z-index:20;font-size:14px;font-weight:700}.empty-state{grid-column:1/-1;text-align:center;padding:30px 18px;background:#fff;border:1px dashed #cbdce2;border-radius:18px}.empty-state .empty-icon{font-size:34px;margin-bottom:9px}footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 10px}
+
+/* Rediseño móvil: identificación inequívoca, ubicación destacada y controles táctiles */
+.identity-panel{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.identity-cell{border:1px solid #d6e5e9;border-radius:13px;padding:10px 11px;background:#f5fafb;min-width:0}
+.identity-cell span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#657c88;font-weight:900;margin-bottom:5px}
+.identity-cell strong{display:block;font-size:14px;line-height:1.25;overflow-wrap:anywhere;color:#17394b}
+.serial-box{background:#f0f5f7;border:1px solid #d9e4e8;border-radius:12px;padding:12px}
+.serial-box label{display:block;font-size:11px;font-weight:900;color:#617984;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.serial-box strong{font-size:16px;letter-spacing:.4px;overflow-wrap:anywhere}
+.location-note{font-size:11px;color:#657c88;margin-top:6px;line-height:1.4}
+/* Rediseño visual de tarjetas: iconos SVG, ubicación destacada y mayor contraste */
+.equip{border:1px solid #d4e3e8;background:linear-gradient(160deg,#fff 0%,#f8fcfd 100%);padding:16px;min-height:220px}
+.equip-icon{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;color:#087f8c;background:#dff4f3;box-shadow:inset 0 0 0 1px #c4e9e7}
+.equip-icon svg{width:34px;height:34px;display:block}
+.equip-icon.transport{color:#a85d09;background:#fff0d9;box-shadow:inset 0 0 0 1px #f6dfbd}
+.equip-icon.monitor{color:#4b4bb3;background:#eeeeff;box-shadow:inset 0 0 0 1px #dadaff}
+.equip-kind{font-size:10px;letter-spacing:1.1px;font-weight:900;color:#607987;margin:0 0 5px}
+.location-tag{display:flex;align-items:center;gap:7px;background:#12354a;color:#fff;padding:10px 12px;border-radius:12px;margin:0 0 10px;min-height:45px}
+.location-tag .pin{font-size:20px;line-height:1;color:#ffcf5a}
+.location-tag strong{font-size:19px;line-height:1.1;letter-spacing:.1px;overflow-wrap:anywhere}
+.equip .model{font-weight:750;color:#3f5b69;min-height:0}
+.equip .serial{font-size:11px;padding-top:8px;border-top:1px solid #e5eef1;margin-top:10px}
+.equip .census{background:#f0f5f7;border-radius:8px;padding:7px 8px;margin-top:7px}
+@media(max-width:520px){.equip{min-height:0;padding:14px;display:block}.equip-top{margin-bottom:9px}.location-tag strong{font-size:20px}.equip-icon{width:50px;height:50px}}
+
+@media(max-width:520px){header{padding:18px 14px 23px;border-radius:0 0 24px 24px}.wrap{padding:12px 11px}.hero-row{align-items:center}.hero-row h2{font-size:18px}.hero-row .btn{padding:10px 11px;min-height:42px;font-size:12px}.stats{gap:7px}.stat{padding:11px 9px;border-radius:15px}.stat .stat-icon{font-size:17px;margin-bottom:5px}.stat b{font-size:23px}.stat span{font-size:10px;line-height:1.2}.filters{grid-template-columns:1fr}.filters select{max-width:none}.equip-list{grid-template-columns:1fr;gap:9px}.equip{min-height:0;padding:13px 14px}.equip-top{margin-bottom:9px}.equip-icon{width:43px;height:43px}.equip strong{font-size:16px}.equip .model{min-height:0}.equip .serial{margin-top:7px}.badge{margin-top:9px}.fieldgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.battery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.battery{padding:9px}.battery-head{align-items:flex-start;flex-wrap:wrap}.color-toggle{min-width:0;padding:6px 7px}.card{padding:13px;border-radius:18px}.btnrow{display:grid;grid-template-columns:1fr}.btnrow .btn{width:100%}.form-hero{padding:15px}.back{min-height:45px}}
+@media(min-width:760px){.wrap{padding:20px}.stats{grid-template-columns:repeat(3,1fr)}.equip-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="brand-icon" aria-hidden="true"><svg viewBox="0 0 48 48" width="34" height="34" fill="none"><path d="M13 7v10a11 11 0 0 0 22 0V7M8 7h10M30 7h10" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M24 28v5a8 8 0 0 0 16 0v-2" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><circle cx="40" cy="27" r="3" fill="#f5c451"/></svg></div><div><h1>CONTROL DE RESPIRADORES<br>Y MONITORES</h1><p>UCIP · Revisión semanal de equipos</p></div></div><div class="status" id="connection">Conectando con Google Sheets…</div></header>
+<main class="wrap">
+  <section id="home">
+    <div class="hero-row"><div><div class="eyebrow">Panel de control</div><h2>Control de esta semana</h2><div class="hint" id="weeklabel">Cargando…</div></div><button class="btn secondary" onclick="loadData()">↻ Actualizar</button></div>
+    <div class="stats"><div class="stat"><span class="stat-icon">🧰</span><b id="total">—</b><span>Equipos activos</span></div><div class="stat"><span class="stat-icon">✅</span><b id="reviewed">—</b><span>Revisados</span></div><div class="stat"><span class="stat-icon">⏳</span><b id="pending">—</b><span>Pendientes</span></div></div>
+    <div class="progress-card"><div class="progress-label"><span>Progreso semanal</span><span id="progressText">Calculando…</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div>
+    <div class="filters"><div class="searchbox"><span>🔎</span><input id="search" placeholder="Buscar equipo, modelo, serie…" oninput="renderList()" aria-label="Buscar equipo"></div><select id="statusFilter" onchange="renderList()" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option value="pending">Pendientes</option><option value="done">Revisados</option></select><select id="category" onchange="renderList()" class="hidden" aria-label="Categoría"><option value="">Todas las categorías</option><option>Respirador principal</option><option>Respirador de transporte</option><option>Monitor IntelliVue X2</option></select></div>
+    <div class="quick-filters"><button class="chip active" data-cat="" onclick="setCategory('')">🗂️ Todos</button><button class="chip" data-cat="Respirador principal" onclick="setCategory('Respirador principal')">🫁 Respiradores</button><button class="chip" data-cat="Respirador de transporte" onclick="setCategory('Respirador de transporte')">🚑 Transporte</button><button class="chip" data-cat="Monitor IntelliVue X2" onclick="setCategory('Monitor IntelliVue X2')">📟 Monitores</button></div>
+    <div class="list-heading"><strong id="listTitle">Todos los equipos</strong><span id="listCount"></span></div><div id="equipList" class="equip-list"></div>
+  </section>
+  <section id="formView" class="hidden">
+    <button class="btn secondary back" onclick="showHome()">← Volver al listado</button>
+    <div class="card">
+      <div class="form-hero"><h2 id="formTitle">Equipo</h2><div id="formSub" class="hint"></div><span id="reviewBadge" class="badge pending">Pendiente</span></div>
+      <div class="current" id="lastRecord"></div>
+      <div id="mainFields">
+        <div class="section-title">Datos del control</div>
+        <div class="fieldgrid">
+          <div class="field"><label>Horas restantes para mantenimiento</label><input id="maintenance" type="number" min="0" step="1" placeholder="Horas"></div>
+          <div class="field"><label>Autonomía batería (minutos)</label><input id="autonomy" type="number" min="0" step="1" placeholder="Minutos"></div>
+          <div class="field"><label>Celda de O₂ (%)</label><input id="oxygen" type="number" min="0" max="100" step="1" placeholder="%"></div>
+          <div class="field"><label>Cassette espiratorio (%)</label><input id="cassette" type="number" min="0" max="100" step="1" placeholder="%"></div>
+        </div>
+        <div class="section-title">Baterías del respirador · celdas 1 a 6</div>
+        <p class="hint">Introduce el porcentaje solo en las celdas ocupadas. Pulsa el botón de cada celda para alternar el color del aviso entre negro y rojo.</p>
+        <div id="batteryGrid" class="battery-grid"></div>
+      </div>
+      <div id="transportFields" class="hidden"><div class="section-title">Control de transporte</div><p class="hint">Al guardar, queda registrada la revisión y la fecha. No se solicitan valores adicionales.</p></div>
+      <div id="monitorFields" class="hidden"><div class="section-title">Batería del monitor</div><div class="field"><label>Porcentaje indicado</label><select id="monitorBattery"><option value="">Seleccionar…</option><option>20</option><option>40</option><option>60</option><option>80</option><option>100</option></select></div></div>
+      <div class="section-title">Ubicación e identificación</div>
+      <div class="fieldgrid">
+        <div class="field full"><div class="serial-box"><label>N.º de serie · identificador fijo</label><strong id="serialNumber">No indicado</strong><div class="location-note">Este dato se conserva sin cambios para no sobrescribir el identificador del inventario.</div></div></div>
+        <div class="field full"><label>Ubicación actual (editable)</label><input id="location" placeholder="Ej. MIP-1, QNO, RMN1…"></div>
+        <div class="field full"><label>Observaciones</label><textarea id="notes" rows="2" placeholder="Opcional"></textarea></div>
+        <div class="field full"><label>Revisado por (opcional)</label><input id="user" placeholder="Iniciales o nombre"></div>
+      </div>
+      <div class="btnrow"><button class="btn" id="saveBtn" onclick="saveControl()">Guardar revisión</button><button class="btn secondary" onclick="showHome()">Cancelar</button></div>
+      <p class="hint">Se guardará el historial de esta revisión y se actualizará el estado actual del equipo.</p>
+    </div>
+  </section>
+</main>
+<footer>Control interno de equipos · UCIP</footer>
+<div id="toast" class="toast hidden"></div>
+<script>
+/* IMPORTANTE: al sustituir este archivo en GitHub, vuelve a pegar aquí tu URL /exec de Apps Script. */
+const API_URL = 'PEGA_AQUI_LA_URL_WEB_APP_DE_APPS_SCRIPT';
+let data = {equipos:[],semana:'',resumen:{}}, selected = null, toastTimer;
+
+function jsonp(params){
+  return new Promise((resolve,reject)=>{
+    const cb='jsonp_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+    const script=document.createElement('script');
+    const timeout=setTimeout(()=>{cleanup();reject(new Error('Tiempo de espera agotado al conectar con Google Sheets.'))},15000);
+    function cleanup(){clearTimeout(timeout);delete window[cb];script.remove()}
+    window[cb]=(res)=>{cleanup();resolve(res)};
+    const q=new URLSearchParams({...params,callback:cb});
+    script.onerror=()=>{cleanup();reject(new Error('No se pudo conectar. Comprueba la URL /exec y el despliegue de Apps Script.'))};
+    script.src=API_URL+'?'+q.toString();document.body.appendChild(script);
+  });
+}
+async function api(action,payload){
+  if(!API_URL.startsWith('https://script.google.com/macros/s/')||API_URL.includes('PEGA_AQUI')) throw new Error('Falta pegar la URL /exec de Apps Script en el archivo index.html.');
+  return jsonp({action,data:JSON.stringify(payload||{})});
+}
+function setConnection(t){document.getElementById('connection').textContent=t}
+async function loadData(){
+  try{
+    setConnection('Conectando con Google Sheets…');
+    const r=await jsonp({action:'init'});
+    if(!r.ok)throw new Error(r.error||'Error al leer los datos');
+    data=r;data.equipos=(r.equipos||[]).map(normalizeEquipment);setConnection('Conectado · datos sincronizados');document.getElementById('weeklabel').textContent='Semana iniciada el '+formatDate(r.semana);
+    document.getElementById('total').textContent=r.resumen.total;
+    document.getElementById('reviewed').textContent=r.resumen.revisados;
+    document.getElementById('pending').textContent=r.resumen.pendientes;
+    const total=Number(r.resumen.total)||0,reviewed=Number(r.resumen.revisados)||0,pct=total?Math.round(reviewed/total*100):0;document.getElementById('progressText').textContent=pct+'% completado';document.getElementById('progressFill').style.width=pct+'%';
+    renderList();
+  }catch(e){setConnection('Sin conexión');showToast(e.message)}
+}
+function formatDate(s){if(!s)return '';const p=s.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:s}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function setCategory(cat){
+  document.getElementById('category').value=cat;
+  document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+  renderList();
+}
+function normalizeEquipment(e){
+  // En la estructura actual de Apps Script, el número de serie inicial está guardado
+  // en el campo llamado "Censo". Lo interpretamos como serie cuando son 7-10 dígitos.
+  const raw=String(e.censo??'').trim();
+  const rawLooksSerial=/^\d{7,10}$/.test(raw);
+  const serialById={
+    'RESP-SERVOI-MIP1':'10167109','RESP-SERVOI-MIP2':'10167118','RESP-SERVOI-MIP3':'10167117','RESP-SERVOI-MIP4':'10167115','RESP-SERVOI-MIP5':'10167113','RESP-SERVOI-MIP6':'10167112','RESP-SERVOI-MIP7':'10145617','RESP-SERVOI-MIP8':'10167111','RESP-SERVOI-MIP9':'10160686','RESP-SERVOI-MIP10':'10167116',
+    'RESP-SERVOI-QNO':'10140210','RESP-SERVOI-RMN2':'10134251','RESP-SERVOI-RMN1':'10163556','RESP-SERVO-U1':'10290015','RESP-SERVO-U2':'10290016','RESP-SERVO-U3':'10290017','RESP-SERVOI-SINUBICACION':'10101499','TRANSP-OXYLOG':'10286594','TRANSP-TRILOGY':'10262708',
+    'MON-X2-MIP1':'10149656','MON-X2-MIP2':'10152212','MON-X2-MIP3':'10145554','MON-X2-MIP4':'10149652','MON-X2-MIP5':'10190854','MON-X2-MIP6':'10232853','MON-X2-MIP7':'10149653','MON-X2-MIP8':'10151420','MON-X2-MIP9':'10149657','MON-X2-MIP10':'10155351'
+  };
+  return {...e,_rawCenso:raw,serie:String(e.serie|| (rawLooksSerial?raw:'') || serialById[String(e.id||'')] || '').trim(),censo:rawLooksSerial?'':raw};
+}
+function getEquipmentLocation(e){
+  // La ubicación guardada en INVENTARIO tiene prioridad; si está vacía, usamos el ID
+  // del equipo o su número de serie conocido. Así no aparece "Ubicación pendiente"
+  // para equipos del inventario inicial aunque el campo de ubicación esté vacío.
+  const savedLocation=String(e.ubicacion||'').trim();
+  if(savedLocation && !/^(ubicación pendiente|ubicacion pendiente|pendiente|sin ubicación)$/i.test(savedLocation)) return savedLocation;
+  const byId={
+    'RESP-SERVOI-MIP1':'MIP-1','RESP-SERVOI-MIP2':'MIP-2','RESP-SERVOI-MIP3':'MIP-3','RESP-SERVOI-MIP4':'MIP-4','RESP-SERVOI-MIP5':'MIP-5','RESP-SERVOI-MIP6':'MIP-6','RESP-SERVOI-MIP7':'MIP-7','RESP-SERVOI-MIP8':'MIP-8','RESP-SERVOI-MIP9':'MIP-9','RESP-SERVOI-MIP10':'MIP-10',
+    'RESP-SERVOI-QNO':'QNO · reserva/situación especial','RESP-SERVOI-RMN2':'RMN2 · reserva/situación especial','RESP-SERVOI-RMN1':'RMN1 · reserva/situación especial','RESP-SERVO-U1':'U1 · reserva/situación especial','RESP-SERVO-U2':'U2 · reserva/situación especial','RESP-SERVO-U3':'U3 · reserva/situación especial','RESP-SERVOI-SINUBICACION':'Sin ubicación indicada en Excel','TRANSP-OXYLOG':'Transporte','TRANSP-TRILOGY':'Transporte',
+    'MON-X2-MIP1':'MIP-1','MON-X2-MIP2':'MIP-2','MON-X2-MIP3':'MIP-3','MON-X2-MIP4':'MIP-4','MON-X2-MIP5':'MIP-5','MON-X2-MIP6':'MIP-6','MON-X2-MIP7':'MIP-7','MON-X2-MIP8':'MIP-8','MON-X2-MIP9':'MIP-9','MON-X2-MIP10':'MIP-10'
+  };
+  if(byId[String(e.id||'')]) return byId[String(e.id)];
+  const bySerial={
+    '10167109':'MIP-1','10167118':'MIP-2','10167117':'MIP-3','10167115':'MIP-4','10167113':'MIP-5','10167112':'MIP-6','10145617':'MIP-7','10167111':'MIP-8','10160686':'MIP-9','10167116':'MIP-10',
+    '10140210':'QNO · reserva/situación especial','10134251':'RMN2 · reserva/situación especial','10163556':'RMN1 · reserva/situación especial','10290015':'U1 · reserva/situación especial','10290016':'U2 · reserva/situación especial','10290017':'U3 · reserva/situación especial','10101499':'Sin ubicación indicada en Excel','10286594':'Transporte','10262708':'Transporte',
+    '10149656':'MIP-1','10152212':'MIP-2','10145554':'MIP-3','10149652':'MIP-4','10190854':'MIP-5','10232853':'MIP-6','10149653':'MIP-7','10151420':'MIP-8','10149657':'MIP-9','10155351':'MIP-10'
+  };
+  return bySerial[String(e.serie||e._rawCenso||'')] || 'Ubicación pendiente';
+}
+function iconSvg(type){
+  if(type==='resp') return '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="6" width="32" height="36" rx="7" fill="none" stroke="currentColor" stroke-width="2.8"/><rect x="14" y="12" width="20" height="10" rx="2" fill="currentColor" opacity=".18"/><path d="M15 18h4l3-4 4 7 3-3h4M15 29h18M15 34h11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="33" cy="34" r="2" fill="currentColor"/></svg>';
+  if(type==='trans') return '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="8" width="38" height="27" rx="5" fill="none" stroke="currentColor" stroke-width="2.8"/><path d="M11 23h5l4-7 5 13 4-7h8M13 40h22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13" cy="40" r="2" fill="currentColor"/><circle cx="35" cy="40" r="2" fill="currentColor"/></svg>';
+  return '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="6" width="38" height="29" rx="5" fill="none" stroke="currentColor" stroke-width="2.8"/><path d="M10 23h5l4-8 5 13 5-9 3 4h6M17 42h14M24 35v7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+function renderList(){
+  const q=document.getElementById('search').value.toLowerCase(),cat=document.getElementById('category').value,sf=document.getElementById('statusFilter').value;
+  const list=data.equipos.filter(e=>(!cat||e.categoria===cat)&&(!sf||(sf==='done'?e.revisadoEstaSemana:!e.revisadoEstaSemana))&&[e.modelo,e.serie,e.censo,getEquipmentLocation(e),e.ubicacion,e.categoria].join(' ').toLowerCase().includes(q));
+  const title=cat==='Respirador principal'?'Respiradores principales':cat==='Respirador de transporte'?'Respiradores de transporte':cat==='Monitor IntelliVue X2'?'Monitores IntelliVue X2':'Todos los equipos';
+  document.getElementById('listTitle').textContent=title;
+  document.getElementById('listCount').textContent=list.length+' equipo'+(list.length===1?'':'s');
+  const listEl=document.getElementById('equipList');
+  listEl.innerHTML=list.map(e=>{
+    const main=e.categoria==='Respirador principal',trans=e.categoria==='Respirador de transporte';
+    const iconClass=main?'':trans?'transport':'monitor';
+    const place=getEquipmentLocation(e);
+    const kind=main?'RESPIRADOR':trans?'RESPIRADOR DE TRANSPORTE':'MONITOR';
+    const heading=kind+' · '+place;
+    return `<button class="equip ${e.revisadoEstaSemana?'done-card':'pending-card'}" onclick="openEquipment('${esc(e.id)}')" aria-label="Abrir ${esc(heading)}"><div class="equip-top"><span class="equip-icon ${iconClass}">${iconSvg(main?'resp':trans?'trans':'monitor')}</span><span class="equip-check">${e.revisadoEstaSemana?'✓':'›'}</span></div><div class="equip-kind">${kind}</div><div class="location-tag"><span class="pin">⌖</span><strong>${esc(place)}</strong></div><div class="model">${esc(e.modelo||'Modelo no indicado')}</div><div class="serial">🔢 N.º de serie: ${esc(e.serie||'No indicado')}</div><div class="census">📍 Ubicación: ${esc(place)}</div><span class="badge ${e.revisadoEstaSemana?'done':'pending'}">${e.revisadoEstaSemana?'✓ Revisado esta semana':'◷ Pendiente esta semana'}</span></button>`;
+  }).join('')||'<div class="empty-state"><div class="empty-icon">🔍</div><strong>No hay equipos para mostrar</strong><p class="hint">Prueba con otra búsqueda o cambia los filtros.</p></div>';
+}
+function openEquipment(id){
+  selected=data.equipos.find(e=>e.id===id);if(!selected)return;
+  document.getElementById('home').classList.add('hidden');document.getElementById('formView').classList.remove('hidden');
+  const icon=selected.categoria==='Respirador principal'?'🫁':selected.categoria==='Respirador de transporte'?'🚑':'📟';
+  document.getElementById('formTitle').textContent=icon+' '+(selected.categoria==='Respirador principal'?'RESPIRADOR':selected.categoria==='Respirador de transporte'?'RESPIRADOR DE TRANSPORTE':'MONITOR')+' · '+getEquipmentLocation(selected);
+  document.getElementById('formSub').textContent=(selected.modelo||'Modelo no indicado')+' · Identificador fijo del equipo';
+  document.getElementById('reviewBadge').textContent=selected.revisadoEstaSemana?'Revisado esta semana':'Pendiente';
+  document.getElementById('reviewBadge').className='badge '+(selected.revisadoEstaSemana?'done':'pending');
+  const s=selected.estado||{};
+  document.getElementById('lastRecord').textContent=s['Fecha control']?'Últimos datos guardados: '+String(s['Fecha control']).replace('T',' ').slice(0,16):'Todavía no hay un control guardado para este equipo.';
+  document.getElementById('serialNumber').textContent=selected.serie||'No indicado';document.getElementById('location').value=selected.ubicacion||getEquipmentLocation(selected); 
+  document.getElementById('notes').value=s['Observaciones']||'';document.getElementById('user').value='';
+  const main=selected.categoria==='Respirador principal',trans=selected.categoria==='Respirador de transporte',mon=selected.categoria==='Monitor IntelliVue X2';
+  document.getElementById('mainFields').classList.toggle('hidden',!main);document.getElementById('transportFields').classList.toggle('hidden',!trans);document.getElementById('monitorFields').classList.toggle('hidden',!mon);
+  if(main){
+    document.getElementById('maintenance').value=s['Mantenimiento horas']??'';document.getElementById('autonomy').value=s['Autonomía batería minutos']??'';
+    document.getElementById('oxygen').value=s['Celda O2 %']??'';document.getElementById('cassette').value=s['Cassette espiratorio %']??'';
+    const grid=document.getElementById('batteryGrid');grid.innerHTML='';
+    for(let i=1;i<=6;i++){const pct=s['Batería '+i+' %']??'',color=s['Batería '+i+' color']==='rojo'?'rojo':'negro';grid.insertAdjacentHTML('beforeend',`<div class="battery"><div class="battery-head"><span>Celda ${i}</span><button type="button" id="color${i}" class="color-toggle ${color==='rojo'?'red':''}" onclick="toggleColor(${i})">${color==='rojo'?'🔴 Rojo':'⚫ Negro'}</button></div><input id="pct${i}" type="number" min="0" max="100" step="1" placeholder="Vacío si no hay batería" value="${esc(pct)}"><div class="hint">Porcentaje (%)</div></div>`)}
+  } else if(mon){document.getElementById('monitorBattery').value=s['Batería monitor %']??''}
+}
+function toggleColor(i){const b=document.getElementById('color'+i),red=b.classList.toggle('red');b.textContent=red?'🔴 Rojo':'⚫ Negro'}
+function showHome(){document.getElementById('formView').classList.add('hidden');document.getElementById('home').classList.remove('hidden');loadData()}
+async function saveControl(){
+  if(!selected)return;
+  const btn=document.getElementById('saveBtn');btn.disabled=true;btn.textContent='Guardando…';
+  try{
+    const d={id:selected.id,censo:selected._rawCenso,ubicacion:document.getElementById('location').value.trim(),observaciones:document.getElementById('notes').value.trim(),usuario:document.getElementById('user').value.trim(),baterias:[]};
+    if(selected.categoria==='Respirador principal'){
+      d.mantenimiento=document.getElementById('maintenance').value;d.autonomia=document.getElementById('autonomy').value;d.oxigeno=document.getElementById('oxygen').value;d.cassette=document.getElementById('cassette').value;
+      for(let i=1;i<=6;i++)d.baterias.push({porcentaje:document.getElementById('pct'+i).value,color:document.getElementById('color'+i).classList.contains('red')?'rojo':'negro'});
+    }else if(selected.categoria==='Monitor IntelliVue X2')d.bateriaMonitor=document.getElementById('monitorBattery').value;
+    const r=await api('guardarControl',d);if(!r.ok)throw new Error(r.error||'No se pudo guardar');
+    showToast('✓ Revisión guardada correctamente');document.getElementById('formView').classList.add('hidden');document.getElementById('home').classList.remove('hidden');await loadData();
+  }catch(e){showToast(e.message)}finally{btn.disabled=false;btn.textContent='Guardar revisión'}
+}
+function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.add('hidden'),5000)}
+loadData();
+</script>
+</body>
+</html>
