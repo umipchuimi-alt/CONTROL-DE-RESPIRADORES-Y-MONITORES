@@ -253,7 +253,15 @@ async function saveControl(){
     }else if(selected.categoria==='Respirador de transporte'){d.fechaChequeo=document.getElementById('transportDate').value;if(!d.fechaChequeo)throw new Error('Selecciona la fecha del chequeo.');}
     else if(selected.categoria==='Monitor IntelliVue X2')d.bateriaMonitor=document.getElementById('monitorBattery').value;
     const r=await api('guardarControl',d);if(!r.ok)throw new Error(r.error||'No se pudo guardar');
-    showToast('✓ Revisión guardada correctamente');document.getElementById('formView').classList.add('hidden');document.getElementById('home').classList.remove('hidden');await loadData();
+    // Actualización optimista: mostrar el equipo como revisado inmediatamente tras confirmar el guardado.
+    const idGuardado=String(selected.id||'').trim().toUpperCase();
+    const equipoGuardado=data.equipos.find(e=>String(e.id||'').trim().toUpperCase()===idGuardado);
+    if(equipoGuardado){equipoGuardado.revisadoEstaSemana=true;equipoGuardado.censo=d.censo;equipoGuardado.ubicacion=d.ubicacion;equipoGuardado.estado=equipoGuardado.estado||{};equipoGuardado.estado['Fecha control']=r.fecha||new Date().toISOString();}
+    const idsRevisados=new Set(data.equipos.filter(e=>e.revisadoEstaSemana).map(e=>String(e.id||'').trim().toUpperCase()));
+    data.resumen=data.resumen||{};data.resumen.total=data.equipos.length;data.resumen.revisados=idsRevisados.size;data.resumen.pendientes=Math.max(0,data.equipos.length-idsRevisados.size);
+    document.getElementById('total').textContent=data.resumen.total;document.getElementById('reviewed').textContent=data.resumen.revisados;document.getElementById('pending').textContent=data.resumen.pendientes;
+    const pct=data.resumen.total?Math.round(data.resumen.revisados/data.resumen.total*100):0;document.getElementById('progressText').textContent=pct+'% completado';document.getElementById('progressFill').style.width=pct+'%';
+    renderList();showToast('✓ Revisión guardada y marcada como realizada');document.getElementById('formView').classList.add('hidden');document.getElementById('home').classList.remove('hidden');await loadData();
   }catch(e){showToast(e.message)}finally{btn.disabled=false;btn.textContent='Guardar revisión'}
 }
 function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.add('hidden'),5000)}
